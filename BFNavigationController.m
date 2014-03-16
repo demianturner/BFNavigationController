@@ -7,11 +7,7 @@
 
 #import "BFNavigationController.h"
 #import "BFViewController.h"
-#import "NSView+BFUtilities.h"
-
-static const CGFloat kPushPopAnimationDuration = 0.2;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
+#import <QuartzCore/QuartzCore.h>
 
 @interface BFNavigationController ()
 
@@ -23,17 +19,10 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
 
 @end
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 @implementation BFNavigationController
 {
     NSMutableArray *_viewControllers;
 }
-
-@synthesize delegate = _delegate;
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - Init Methods
 
@@ -41,8 +30,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
 {
     return [self initWithFrame: NSZeroRect rootViewController: nil];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(id)initWithFrame: (NSRect)aFrame rootViewController: (NSViewController *)controller
 {
@@ -73,9 +60,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     return self;
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 #pragma mark - Accessors
 
 -(NSViewController *)topViewController
@@ -83,36 +67,25 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     return [_viewControllers lastObject];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 -(NSViewController *)visibleViewController
 {
     return [_viewControllers lastObject];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(NSArray *)viewControllers
 {
     return [NSArray arrayWithArray: _viewControllers];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 -(void)setViewControllers: (NSArray *)viewControllers
 {
     [self _setViewControllers: viewControllers animated: NO];
 }
 
-///////////////////////////////////////////////////////////////////////////////////////////////////
-
 -(void)setViewControllers: (NSArray *)viewControllers animated: (BOOL)animated
 {
     [self _setViewControllers: viewControllers animated: animated];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - Helpers & Navigation
 
@@ -129,8 +102,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Navigate
     [self _navigateFromViewController: visibleController toViewController: newTopmostController animated: animated push: push];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(void)_navigateFromViewController: (NSViewController *)lastController 
                   toViewController: (NSViewController *)newController 
@@ -153,6 +124,9 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Last controller will disappear
     if([lastController respondsToSelector: @selector(viewWillDisappear:)])
         [(id<BFViewController>)lastController viewWillDisappear: animated];
+    
+    
+    
     
     // Completion inline Block
     void(^navigationCompleted)(BOOL) = ^(BOOL animated){
@@ -178,35 +152,26 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
         // Assign start frame
         newController.view.frame = newControllerStartFrame;
         
-        // Remove last controller from superview
-        [lastController.view removeFromSuperview];
-        
-        // We use NSImageViews to cache animating views. Of course we could animate using Core Animation layers - Do it if you like that.
-        NSImageView *lastControllerImageView = [[NSImageView alloc] initWithFrame: self.view.bounds];
-        NSImageView *newControllerImageView = [[NSImageView alloc] initWithFrame: newControllerStartFrame];
-        
-        [lastControllerImageView setImage: [lastController.view flattenWithSubviews]];
-        [newControllerImageView setImage: [newController.view flattenWithSubviews]];
-        
-        [self.view addSubview: lastControllerImageView];
-        [self.view addSubview: newControllerImageView];
-        
-        // Animation 'block' - Using default timing function
         [NSAnimationContext beginGrouping];
-        [[NSAnimationContext currentContext] setDuration: kPushPopAnimationDuration];
-        [[lastControllerImageView animator] setFrame: lastControllerEndFrame];
-        [[newControllerImageView animator] setFrame: self.view.bounds];
-        [NSAnimationContext endGrouping];
         
-        // Could have just called setCompletionHandler: on animation context if it was Lion only.
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, kPushPopAnimationDuration * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            
-            [lastControllerImageView removeFromSuperview];
-            [self.view replaceSubview: newControllerImageView with: newController.view];
-            newController.view.frame = self.view.bounds;
-            navigationCompleted(animated);
-        });
+        const CFTimeInterval duration = ([NSApp currentEvent].modifierFlags & NSShiftKeyMask) ? 10.0f : 0.33f;
+        CATransition *pushAnimation = [CATransition animation];
+        pushAnimation.duration = duration;
+        pushAnimation.type = kCATransitionPush;
+        pushAnimation.subtype = push ? kCATransitionFromRight : kCATransitionFromLeft;
+        [pushAnimation setTimingFunction:[CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseOut]];
+        
+//        [NSAnimationContext currentContext] setCompletionHandler:
+        
+        [self.view setAnimations:@{@"subviews" : pushAnimation }];
+
+        
+        [lastController.view setFrame:lastControllerEndFrame];
+        [newController.view setFrame:self.view.bounds];
+        
+        [[self.view animator] replaceSubview:lastController.view with:newController.view];
+        
+        [NSAnimationContext endGrouping];
     }
     else
     {
@@ -216,9 +181,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
         navigationCompleted(animated);
     }
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 #pragma mark - Push / Pop Controllers
 
@@ -230,8 +192,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Navigate
     [self _navigateFromViewController: visibleController toViewController: [_viewControllers lastObject] animated: animated push: YES];
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(NSViewController *)popViewControllerAnimated: (BOOL)animated
 {
@@ -248,8 +208,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Return popping controller
     return controller;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(NSArray *)popToRootViewControllerAnimated: (BOOL)animated
 {
@@ -268,8 +226,6 @@ static const CGFloat kPushPopAnimationDuration = 0.2;
     // Return popping controller stack
     return dispControllers;
 }
-
-///////////////////////////////////////////////////////////////////////////////////////////////////
 
 -(NSArray *)popToViewController: (NSViewController *)viewController animated: (BOOL)animated
 {
