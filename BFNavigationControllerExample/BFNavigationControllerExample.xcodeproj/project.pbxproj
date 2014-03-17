@@ -22,7 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		609F02E7155D3D8E00E37C6C /* BFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BFViewController.h; path = ../../BFViewController.h; sourceTree = "<group>"; };
+		609F02E7155D3D8E00E37C6C /* BFViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFViewController.h; sourceTree = "<group>"; };
 		60CFF36C1549E4F70059C143 /* BFNavigationControllerExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BFNavigationControllerExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		60CFF3701549E4F70059C143 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		60CFF3731549E4F70059C143 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -36,8 +36,8 @@
 		60CFF3821549E4F70059C143 /* BFAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BFAppDelegate.h; sourceTree = "<group>"; };
 		60CFF3831549E4F70059C143 /* BFAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BFAppDelegate.m; sourceTree = "<group>"; };
 		60CFF3861549E4F70059C143 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
-		60CFF3951549E8790059C143 /* BFNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BFNavigationController.h; path = ../../BFNavigationController.h; sourceTree = "<group>"; };
-		60CFF3961549E8790059C143 /* BFNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = BFNavigationController.m; path = ../../BFNavigationController.m; sourceTree = "<group>"; };
+		60CFF3951549E8790059C143 /* BFNavigationController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BFNavigationController.h; sourceTree = "<group>"; };
+		60CFF3961549E8790059C143 /* BFNavigationController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BFNavigationController.m; sourceTree = "<group>"; };
 		60E69427154ABFB4002B145F /* TestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestViewController.h; sourceTree = "<group>"; };
 		60E69428154ABFB4002B145F /* TestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TestViewController.m; sourceTree = "<group>"; };
 		60E69429154ABFB4002B145F /* TestViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TestViewController.xib; sourceTree = "<group>"; };
@@ -135,6 +135,7 @@
 				60CFF3961549E8790059C143 /* BFNavigationController.m */,
 			);
 			name = BFNavigationController;
+			path = ../../BFNavigationController;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */

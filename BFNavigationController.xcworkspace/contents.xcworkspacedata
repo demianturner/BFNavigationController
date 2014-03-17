@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <Group
+      location = "group:BFNavigationController"
+      name = "BFNavigationController">
+      <FileRef
+         location = "group:BFViewController.h">
+      </FileRef>
+      <FileRef
+         location = "group:BFNavigationController.h">
+      </FileRef>
+      <FileRef
+         location = "group:BFNavigationController.m">
+      </FileRef>
+   </Group>
+   <FileRef
+      location = "group:BFNavigationControllerExample/BFNavigationControllerExample.xcodeproj">
+   </FileRef>
+</Workspace>
